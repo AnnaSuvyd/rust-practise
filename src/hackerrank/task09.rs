@@ -1,25 +1,23 @@
 use std::io::{self, BufRead};
 
-fn rotate_string(s: &str, k: usize) -> String {
-    let len = s.len();
-    if len == 0 {
-        return String::new();
-    }
-    let k = k % len;
-    format!("{}{}", &s[len - k..], &s[..len - k])
+fn count_tallest_candles(candles: &[i32]) -> i32 {
+    let max_height = candles.iter().max().unwrap_or(&0);
+    candles.iter().filter(|&&h| h == *max_height).count() as i32
 }
 
 fn main() {
     let stdin = io::stdin();
     let mut lines = stdin.lock().lines();
 
-    // Зчитуємо рядок
-    let s = lines.next().unwrap().unwrap();
+    // Читаємо розмір масиву (не використовується безпосередньо)
+    let _n: usize = lines.next().unwrap().unwrap().trim().parse().unwrap();
 
-    // Зчитуємо число зсуву k
-    let k: usize = lines.next().unwrap().unwrap().trim().parse().expect("Введіть ціле число");
+    // Читаємо висоти свічок у вектор
+    let candles: Vec<i32> = lines.next().unwrap().unwrap()
+        .split_whitespace()
+        .map(|s| s.parse().unwrap())
+        .collect();
 
-    let result = rotate_string(&s, k);
-
+    let result = count_tallest_candles(&candles);
     println!("{}", result);
 }
